@@ -1,0 +1,34 @@
+# Sample NUPACK Code for a Minimal Toehold Switch
+
+material = rna1999   
+temperature = 37.0    
+trials = 10    
+
+# target structures
+structure trigger = U30
+structure switch  = U12 D9 (U3 D6 U12 U3)
+structure complex = D30 + U30
+
+# sequence domains
+domain toehold = N12
+domain b = N9
+domain c = N3
+domain d = N6
+
+#minimal RBS and start codon required for translation
+domain start_codon = AUG
+domain loop  = N4 AGAGGAGA
+
+trigger.seq  = d* c* b* toehold*
+switch.seq = toehold b c d loop d* start_codon b*
+complex.seq = d* c* b* toehold* toehold b c d loop d* start_codon b*
+
+#
+# prevent sequence patterns
+#
+prevent = AAAA, CCCC, GGGG, UUUU, KKKKKK, MMMMMM, RRRRRR, SSSSSS, WWWWWW, YYYYYY
+
+# specify stop conditions for normalized ensemble defect
+switch.stop = 5
+trigger.stop = 5
+complex.stop = 5

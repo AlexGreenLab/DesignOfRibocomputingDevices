@@ -1,0 +1,37 @@
+# Sample NUPACK Code for a Six-Input OR Gate RNA
+
+material = rna1999
+temperature = 37.0    
+trials = 10    
+
+# target structure: six toehold switch structures separated by 12-nt spacers followed by the linker and output gene
+structure gate = U3 U12 D9 (U3 D6 U12 U3) U12 U12 D9 (U3 D6 U12 U3) U12 U12 D9 (U3 D6 U12 U3) U12 U12 D9 (U3 D6 U12 U3) U12 U12 D9 (U3 D6 U12 U3) U12 U12 D9 (U3 D6 U12 U3) U50
+
+domain switch_A = GUAAUGAAUUGUAGGCUUGUUAUAGUUAUGAAACAGAGGAGACAUAACAUGAACAAGCCU
+domain switch_B = AUAGAUUUGAUGGCUAUUUGUACGUGUUCGAAACAGAGGAGACGAACAAUGACAAAUAGC
+domain switch_C = CGAAUAAGACUGAGGCUGGGUAUGGUUAGAAAACAGAGGAGAUCUAACAUGACCCAGCCU
+domain switch_D = AUCACUUAUUGUCGUCUUUGUAUGUCUGUAAAACAGAGGAGAUACAGAAUGACAAAGACG
+domain switch_E = ACAAAGAUUGGUCGUUUCAUUACCGUUAGAAAACAGAGGAGAUCUAACAUGAAUGAAACG
+domain switch_F = AAUUGGAUGAAGGCGGUAAGUAUGAUUGUAAGACAGAGGAGAUACAAUAUGACUUACCGC
+
+#linkers between switch modules
+domain linkerA1 = NNNNNNNNNNNN
+domain linkerA2 = NNNNNNNNNNNN
+domain linkerA3 = NNNNNNNNNNNN
+domain linkerA4 = NNNNNNNNNNNN
+domain linkerA5 = NNNNNNNNNNNN
+
+domain preG = GGG
+domain linker21 = AACCUGGCGGCAGCGCAAAAG
+domain output_gene = AUGCGUAAAGGAGAAGAACUUUUCACUGG #first 29 nt of GFP
+
+# thread sequence domains onto target structures
+gate.seq = preG switch_A linkerA1 switch_B linkerA2 switch_C linkerA3 switch_D linkerA4 switch_E linkerA5 switch_F linker21 output_gene
+
+# specify stop condition for normalized ensemble defect
+gate.stop = 10
+
+#
+# prevent sequence patterns
+#
+prevent = AAAA, CCCC, GGGG, UUUU, KKKKKK, MMMMMM, RRRRRR, SSSSSS, WWWWWW, YYYYYY  

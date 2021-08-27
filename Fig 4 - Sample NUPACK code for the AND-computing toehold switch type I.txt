@@ -1,0 +1,49 @@
+#Sample NUPACK Code for the AND-Computing Toehold Switch (ACTS) Type I
+
+material = rna1999   
+temperature = 37.0    
+trials = 10    
+
+# target structures
+
+structure switch = U3 U16 D12 (U3 D6 U14 U3) U50
+structure target = U3 D8 U6 U3 U28 U3 U47
+structure complex = U3 D8 U6 U3 D28 (U3 U47 + U3) U6 U12 U14 U12 U50
+
+# sequence domains
+domain T7_term = UAGCAUAACCCCUUGGGGCCUCUAAACGGGUCUUGAGGGGUUUUUUG
+domain linker21 = AACCUGGCGGCAGCGCAAAAG
+
+#first 29 nt of GFP
+domain output_gene = AUGCGUAAAGGAGAAGAACUUUUCACUGG
+
+domain preG = GGG
+domain targ_stem = N8
+domain targ_loop = N6
+domain targ_spacer1 = N3
+domain targ_spacer2 = N3
+
+domain toehold = N16
+domain stem1 = N12
+domain stem2 = N3
+domain stem3 = NNNNNN
+domain loop  = NNNAACAGAGGAGA
+domain stem2_star = AUG #start codon
+
+switch.seq = preG toehold stem1 stem2 stem3 loop stem3* stem2_star stem1* linker21 output_gene
+target.seq  = preG targ_stem targ_loop targ_stem* targ_spacer1 stem1* toehold* targ_spacer2 T7_term
+complex.seq = preG targ_stem targ_loop targ_stem* targ_spacer1 stem1* toehold* targ_spacer2 T7_term preG toehold stem1 stem2 stem3 loop stem3* stem2_star stem1* linker21 output_gene
+
+# specify stop conditions for normalized ensemble defect
+# Stop condition is increased to 10 to accommodate terminator
+# and output gene non-ideal secondary structure
+
+switch.stop = 10
+target.stop = 10
+complex.stop = 10
+
+#
+# prevent sequence patterns
+#
+
+prevent = AAAA, CCCC, GGGG, UUUU, KKKKKK, MMMMMM, RRRRRR, SSSSSS, WWWWWW, YYYYYY

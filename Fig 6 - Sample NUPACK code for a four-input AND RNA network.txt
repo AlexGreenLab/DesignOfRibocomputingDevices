@@ -1,0 +1,59 @@
+#Sample NUPACK Code for a Four-Input AND RNA Network
+
+material = rna1999
+temperature = 37.0
+trials = 10
+
+#ACTS_TypeI_N2 switch with extended loop domain, which does not include GFP
+domain switch = GGGAUCUAUGUUCAAUUCUAUUCGUCGUCUCAUGAGUAUAGGAGCCGAAACAGUAAACA
+        GAGGAGAUAUACUAUGGAGACGACGAAUAACCUGGCGGCAGCGCAAAAG
+#ACTS_TypeI_N2 trigger:   GGGACCGGUCUUUGCAGAGACCGGUGUA GAGACGACGAAUAGAAUUGAACAUAGAU AAG
+#              structure: ...(((((((((....)))))))))... [   switch binding region  ] ...
+
+#L00 contains the reverse complement of the 5' half of the trigger. The sequence should 
+#appear in the switch.
+domain L00 = NNN CUAUUCGUCGUCUC
+domain L01 = NNNNNNNNNNNNNNNNNNNNN
+domain L02 = NNNNNNNNNNNNNNNNNNNNN
+domain L03 = NNNNNNNNNNNNNNNNNNNNN
+domain L04 = NNN AAUUGAACAUAGAU #This is the 3' half of the trigger
+# 3-nt spacers are added on to the half trigger domains in L00 and L04 to facilitate
+# binding of multi-input multi-arm junction complex to the switch
+
+structure input_01 = U38
+structure input_02 = U42
+structure input_03 = U42
+structure input_04 = U38
+structure complex_01_04 = U38+U38
+structure complex_01_02 = U17 D21 + U21
+structure complex_02_03 = U21 D21 + U21
+structure complex_03_04 = U21 D21 + U17
+structure hcomp_02 = U18 D13 (U3 D6 U26 U3) U20 + U42
+structure hcomp_03 = U18 D13 (U3 D6 U26 U3) U20 + U42
+
+input_01.seq = L00* L01
+input_02.seq = L01* L02
+input_03.seq = L02* L03
+input_04.seq = L03* L04
+complex_01_04.seq = L00* L01 L03* L04
+complex_01_02.seq = L00* L01 L01* L02
+complex_02_03.seq = L01* L02 L02* L03
+complex_03_04.seq = L02* L03 L03* L04
+
+#add switch+input complexes as necessary to specify that particular inputs should not 
+# interact with the switch
+hcomp_02.seq = switch L01* L02
+hcomp_03.seq = switch L02* L03
+
+input_01.stop = 1
+input_02.stop = 1
+input_03.stop = 1
+input_04.stop = 1
+complex_01_04.stop = 1
+complex_01_02.stop = 1
+complex_02_03.stop = 1
+complex_03_04.stop = 1
+hcomp_02.stop = 1
+hcomp_03.stop = 1
+
+prevent = AAAA, CCCC, GGGG, UUUU, KKKKKK, MMMMMM, RRRRRR, SSSSSS, WWWWWW, YYYYYY

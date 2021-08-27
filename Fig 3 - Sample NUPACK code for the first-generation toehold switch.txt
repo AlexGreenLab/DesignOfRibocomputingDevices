@@ -1,0 +1,59 @@
+#Sample NUPACK Code for the First-Generation Toehold Switch
+
+material = rna1999   
+temperature = 37.0    
+trials = 10    
+
+# target structures
+
+#the T7 terminator contains G-U wobble base pairs that can sometimes cause
+#errors during NUPACK design. As a result, we assert that the terminator is
+#fully single stranded. This modification will lead to an increased normalized
+#ensemble defect for the designs but still allow good riboregulators to be
+#generated.
+structure trigger = U3 D8 U6 U3 U30 U3 U47
+
+#We similarly assert that the linker and output gene are single-stranded
+#to avoid design errors.
+structure switch = U3 U12 D9 (U3 D6 U12 U3) U50
+
+structure complex = U3 D8 U6 U3 D30 (U3 U47 + U3) U12 U18 U50
+
+# sequence domains
+domain T7_term = UAGCAUAACCCCUUGGGGCCUCUAAACGGGUCUUGAGGGGUUUUUUG
+domain linker21 = AACCUGGCGGCAGCGCAAAAG
+
+#first 29 nt of GFP
+domain output_gene = AUGCGUAAAGGAGAAGAACUUUUCACUGG
+
+domain preG = GGG
+domain trig_stem = N8
+domain trig_loop = N6
+domain trig_spacer1 = N3
+domain trig_spacer2 = N3
+
+domain toehold = N12
+domain stem1 = N9
+domain stem2 = N3
+domain stem3 = N6
+
+#using a 12-nt loop domain to make full switch a multiple of 3 and in-frame in gate RNAs
+domain loop  = N4 AGAGGAGA
+domain stem2_star = AUG #start codon
+
+switch.seq = preG toehold stem1 stem2 stem3 loop stem3* stem2_star stem1* linker21 output_gene
+trigger.seq = preG trig_stem trig_loop trig_stem* trig_spacer1 stem3* stem2* stem1* toehold* trig_spacer2 T7_term
+complex.seq = preG trig_stem trig_loop trig_stem* trig_spacer1 stem3* stem2* stem1* toehold* trig_spacer2 T7_term preG toehold stem1 stem2 stem3 loop stem3* stem2_star stem1* linker21 output_gene
+
+# specify stop conditions for normalized ensemble defect
+# Stop condition is increased to 10 to accommodate terminator
+# and output gene non-ideal secondary structure
+
+switch.stop = 10
+trigger.stop = 10
+complex.stop = 10
+
+#
+# prevent sequence patterns
+#
+prevent = AAAA, CCCC, GGGG, UUUU, KKKKKK, MMMMMM, RRRRRR, SSSSSS, WWWWWW, YYYYYY

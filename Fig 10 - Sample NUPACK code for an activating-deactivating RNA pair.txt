@@ -1,0 +1,24 @@
+# Sample NUPACK Code for an Activating/Deactivating RNA Pair
+
+material = rna1999
+temperature = 37.0
+trials = 10
+prevent = AAAA, CCCC, GGGG, UUUU, KKKKKK, MMMMMM, RRRRRR, SSSSSS, WWWWWW, YYYYYY
+
+domain act_core = GAAUCAACGACACUACAAUACAUCAG
+domain act_pre  = N16
+domain act_post = N16
+domain deact_pre  = N16
+domain deact_post = N16
+
+structure activator = U58
+structure deactivator = U58
+structure act_deact_complex = D15 (U1 D26 (U1 D15 + U1) U1)
+
+activator.seq = act_pre act_core act_post
+deactivator.seq = deact_pre act_core* deact_post
+act_deact_complex.seq = act_pre act_core act_post deact_pre act_core* deact_post
+
+activator.stop = 1
+deactivator.stop = 1
+act_deact_complex.stop = 1
